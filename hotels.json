@@ -4,61 +4,71 @@
             "name": "Grand Plaza",
             "city": "Stockholm",
             "price_per_night": {"adult": 1200, "child": 800},
-            "beds": 2
+            "beds": 2,
+            "img":"GrandPlaza.jpg"
         },
         {
             "name": "Seaside Retreat",
             "city": "Gothenburg",
             "price_per_night": {"adult": 1100, "child": 750},
-            "beds": 3
+            "beds": 3,
+            "img":"SeasideRetreat.jpg"
         },
         {
             "name": "Mountain Inn",
             "city": "Åre",
             "price_per_night": {"adult": 950, "child": 600},
-            "beds": 2
+            "beds": 2,
+            "img":"MountainInn.jpg"
         },
         {
             "name": "Lakeside Lodge",
             "city": "Uppsala",
             "price_per_night": {"adult": 800, "child": 500},
-            "beds": 4
+            "beds": 4,
+            "img":"LakesideLodge.jpg"
         },
         {
             "name": "Urban Haven",
             "city": "Malmö",
             "price_per_night": {"adult": 1300, "child": 900},
-            "beds": 2
+            "beds": 2,
+            "img":"UrbanHaven.jpg"
         },
         {
             "name": "Forest Escape",
             "city": "Jönköping",
             "price_per_night": {"adult": 900, "child": 650},
-            "beds": 3
+            "beds": 3,
+            "img":"ForestEscape.jpg"
         },
         {
             "name": "Royal Stay",
             "city": "Visby",
             "price_per_night": {"adult": 1500, "child": 1000},
-            "beds": 2
+            "beds": 2,
+            "img":"RoyalStay.jpg"
         },
         {
             "name": "Sunset Villa",
             "city": "Kalmar",
             "price_per_night": {"adult": 1200, "child": 850},
-            "beds": 4
+            "beds": 4,
+            "img":"SunsetVilla.jpg"
         },
         {
             "name": "Harbor View",
             "city": "Helsingborg",
             "price_per_night": {"adult": 1000, "child": 700},
-            "beds": 3
+            "beds": 3,
+            "img":"HarborView.jpg"
         },
         {
             "name": "Countryside Charm",
             "city": "Örebro",
             "price_per_night": {"adult": 850, "child": 550},
-            "beds": 2
+            "beds": 2,
+            "img":"CountrysideCharm.jpg"
         }
     ]
 }
