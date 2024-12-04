@@ -12,6 +12,7 @@ import { Bed } from "lucide-vue-next"
                 <input type="text" />
             </form>
             <ShoppingBasket :size="30" />
+            test
         </div>
     </nav>
 </template>
