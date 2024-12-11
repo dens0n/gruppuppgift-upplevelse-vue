@@ -28,140 +28,134 @@ const decreaseChildren = () => {
 </script>
 
 <template>
-    <div class="flex min-h-screen items-center justify-center">
-        <div class="relative flex items-center justify-center">
-            <div
-                class="mx-5 flex h-[85px] w-full max-w-4xl items-center justify-center divide-x rounded-full border border-gray-200 shadow-lg"
-            >
-                <input
-                    class="h-full min-w-64 rounded-l-full p-10 text-start transition-transform duration-200 ease-in-out hover:rounded-r-full hover:bg-gray-200 hover:shadow-md focus:rounded-r-full focus:bg-gray-100 focus:shadow-md focus:outline-none"
-                    type="text"
-                    placeholder="Var"
-                />
+    <div class="relative flex items-center justify-center">
+        <div
+            class="mx-5 flex h-[85px] w-full max-w-4xl items-center justify-center divide-x rounded-full border border-gray-200 bg-white shadow-lg"
+        >
+            <input
+                class="h-full min-w-64 rounded-l-full p-10 text-start transition-transform duration-200 ease-in-out hover:rounded-r-full hover:bg-gray-200 hover:shadow-md focus:rounded-r-full focus:bg-gray-100 focus:shadow-md focus:outline-none"
+                type="text"
+                placeholder="Var"
+            />
 
-                <VDatePicker v-model="fromDate">
-                    <template #default="{ inputValue, inputEvents }">
-                        <div
-                            class="flex h-full w-64 flex-col items-center justify-center text-start transition-transform duration-200 ease-in-out hover:rounded-full hover:bg-gray-200 hover:shadow-md focus:rounded-full focus:bg-gray-200 focus:shadow-sm focus:outline-none"
-                            :value="inputValue"
-                            v-on="inputEvents"
-                        >
-                            <p>Incheckning</p>
-                            <input
-                                class="bg-inherit text-center font-extralight focus:outline-none"
-                                :value="inputValue"
-                                readonly
-                            />
-                        </div>
-                    </template>
-                </VDatePicker>
-                <VDatePicker v-model="toDate">
-                    <template #default="{ inputValue, inputEvents }">
-                        <div
-                            class="flex h-full w-64 flex-col items-center justify-center text-center transition-transform duration-200 ease-in-out hover:rounded-full hover:bg-gray-200 hover:shadow-md focus:rounded-full focus:bg-gray-200 focus:shadow-sm focus:outline-none"
-                            :value="inputValue"
-                            v-on="inputEvents"
-                        >
-                            <p>Utcheckning</p>
-                            <input
-                                class="bg-inherit text-center font-extralight focus:outline-none"
-                                :value="inputValue"
-                                readonly
-                            />
-                        </div>
-                    </template>
-                </VDatePicker>
-
-                <button
-                    class="relative h-full w-full transition-transform duration-200 ease-in-out hover:rounded-full hover:bg-gray-200 hover:shadow-md focus:rounded-full focus:bg-gray-200 focus:shadow-sm focus:outline-none"
-                    @mouseenter="isGuestModalOpen = true"
-                    @mouseleave="isGuestModalOpen = false"
-                >
-                    <div class="flex flex-col items-start">
-                        <span class="relative left-9">Vem</span>
-                        <span class="relative left-9 font-extralight"
-                            >Lägg till gäster</span
-                        >
-                    </div>
-                    <Transition
-                        enter-active-class="transition duration-200 ease-in-out"
-                        enter-from-class="opacity-0 scale-95 -translate-y-4"
-                        enter-to-class="opacity-100 scale-100 translate-y-0"
-                        leave-active-class="transition duration-200 ease-in-out"
-                        leave-from-class="opacity-100 scale-100 translate-y-0"
-                        leave-to-class="opacity-0 scale-95 -translate-y-4"
+            <VDatePicker v-model="fromDate">
+                <template #default="{ inputValue, inputEvents }">
+                    <div
+                        class="flex h-full w-64 flex-col items-center justify-center text-start transition-transform duration-200 ease-in-out hover:rounded-full hover:bg-gray-200 hover:shadow-md focus:rounded-full focus:bg-gray-200 focus:shadow-sm focus:outline-none"
+                        :value="inputValue"
+                        v-on="inputEvents"
                     >
-                        <div
-                            v-if="isGuestModalOpen"
-                            class="absolute -bottom-3 right-1 h-3 w-[350px]"
-                        >
-                            <ul
-                                class="absolute right-0 top-[12px] flex w-[350px] flex-col items-center justify-center divide-y rounded-2xl border bg-white p-4 shadow-xl"
-                            >
-                                <li
-                                    class="flex w-full items-center justify-between p-5"
-                                >
-                                    <p>Vuxna</p>
-                                    <div
-                                        class="flex items-center justify-center gap-2"
-                                    >
-                                        <button @click.stop="decreaseAdults">
-                                            <CircleMinus
-                                                :size="30"
-                                                :color="
-                                                    adults <= 0
-                                                        ? 'lightgray'
-                                                        : ''
-                                                "
-                                                :stroke-width="1"
-                                            />
-                                        </button>
-                                        <span class="w-5">{{ adults }}</span>
-                                        <button @click.stop="increaseAdults">
-                                            <CirclePlus
-                                                :size="30"
-                                                :stroke-width="1"
-                                            />
-                                        </button>
-                                    </div>
-                                </li>
-                                <li
-                                    class="flex w-full items-center justify-between p-5"
-                                >
-                                    <p>Barn</p>
-                                    <div
-                                        class="flex items-center justify-center gap-2"
-                                    >
-                                        <button @click.stop="decreaseChildren">
-                                            <CircleMinus
-                                                :color="
-                                                    children <= 0
-                                                        ? 'lightgray'
-                                                        : ''
-                                                "
-                                                :size="30"
-                                                :stroke-width="1"
-                                            />
-                                        </button>
-                                        <span class="w-5">{{ children }}</span>
-                                        <button @click.stop="increaseChildren">
-                                            <CirclePlus
-                                                :size="30"
-                                                :stroke-width="1"
-                                            />
-                                        </button>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </Transition>
-                </button>
-            </div>
+                        <p>Incheckning</p>
+                        <input
+                            class="bg-inherit text-center font-extralight focus:outline-none"
+                            :value="inputValue"
+                            readonly
+                        />
+                    </div>
+                </template>
+            </VDatePicker>
+            <VDatePicker v-model="toDate">
+                <template #default="{ inputValue, inputEvents }">
+                    <div
+                        class="flex h-full w-64 flex-col items-center justify-center text-center transition-transform duration-200 ease-in-out hover:rounded-full hover:bg-gray-200 hover:shadow-md focus:rounded-full focus:bg-gray-200 focus:shadow-sm focus:outline-none"
+                        :value="inputValue"
+                        v-on="inputEvents"
+                    >
+                        <p>Utcheckning</p>
+                        <input
+                            class="bg-inherit text-center font-extralight focus:outline-none"
+                            :value="inputValue"
+                            readonly
+                        />
+                    </div>
+                </template>
+            </VDatePicker>
+
             <button
-                class="absolute right-8 max-h-16 min-h-16 min-w-16 max-w-32 rounded-full bg-blue-500 text-center transition-transform duration-200 ease-in-out hover:scale-110 hover:rounded-full hover:bg-blue-400 focus:shadow-sm focus:outline-none active:bg-blue-600"
+                class="relative h-full w-full transition-transform duration-200 ease-in-out hover:rounded-full hover:bg-gray-200 hover:shadow-md focus:rounded-full focus:bg-gray-200 focus:shadow-sm focus:outline-none"
+                @mouseenter="isGuestModalOpen = true"
+                @mouseleave="isGuestModalOpen = false"
             >
-                <Search class="mx-auto" :size="23" color="white" />
+                <div class="flex flex-col items-start">
+                    <span class="relative left-9">Vem</span>
+                    <span class="relative left-9 font-extralight"
+                        >Lägg till gäster</span
+                    >
+                </div>
+                <Transition
+                    enter-active-class="transition duration-200 ease-in-out"
+                    enter-from-class="opacity-0 scale-95 -translate-y-4"
+                    enter-to-class="opacity-100 scale-100 translate-y-0"
+                    leave-active-class="transition duration-200 ease-in-out"
+                    leave-from-class="opacity-100 scale-100 translate-y-0"
+                    leave-to-class="opacity-0 scale-95 -translate-y-4"
+                >
+                    <div
+                        v-if="isGuestModalOpen"
+                        class="absolute -bottom-[11px] right-1 h-3 w-[350px]"
+                    >
+                        <ul
+                            class="absolute right-0 top-[11px] flex w-[350px] flex-col items-center justify-center divide-y rounded-2xl border bg-white p-4 shadow-xl"
+                        >
+                            <li
+                                class="flex w-full items-center justify-between p-5"
+                            >
+                                <p>Vuxna</p>
+                                <div
+                                    class="flex items-center justify-center gap-2"
+                                >
+                                    <button @click.stop="decreaseAdults">
+                                        <CircleMinus
+                                            :size="30"
+                                            :color="
+                                                adults <= 0 ? 'lightgray' : ''
+                                            "
+                                            :stroke-width="1"
+                                        />
+                                    </button>
+                                    <span class="w-5">{{ adults }}</span>
+                                    <button @click.stop="increaseAdults">
+                                        <CirclePlus
+                                            :size="30"
+                                            :stroke-width="1"
+                                        />
+                                    </button>
+                                </div>
+                            </li>
+                            <li
+                                class="flex w-full items-center justify-between p-5"
+                            >
+                                <p>Barn</p>
+                                <div
+                                    class="flex items-center justify-center gap-2"
+                                >
+                                    <button @click.stop="decreaseChildren">
+                                        <CircleMinus
+                                            :color="
+                                                children <= 0 ? 'lightgray' : ''
+                                            "
+                                            :size="30"
+                                            :stroke-width="1"
+                                        />
+                                    </button>
+                                    <span class="w-5">{{ children }}</span>
+                                    <button @click.stop="increaseChildren">
+                                        <CirclePlus
+                                            :size="30"
+                                            :stroke-width="1"
+                                        />
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </Transition>
             </button>
         </div>
+        <button
+            class="absolute right-8 max-h-16 min-h-16 min-w-16 max-w-32 rounded-full bg-blue-500 text-center transition-transform duration-200 ease-in-out hover:scale-110 hover:rounded-full hover:bg-blue-400 focus:shadow-sm focus:outline-none active:bg-blue-600"
+        >
+            <Search class="mx-auto" :size="23" color="white" />
+        </button>
     </div>
 </template>
