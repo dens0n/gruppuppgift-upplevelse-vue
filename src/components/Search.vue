@@ -3,12 +3,17 @@ import { CirclePlus } from "lucide-vue-next"
 import { CircleMinus } from "lucide-vue-next"
 import { Search } from "lucide-vue-next"
 import { ref } from "vue"
+import { useRouter } from "vue-router"
 
 const isGuestModalOpen = ref(false)
 const fromDate = ref(new Date())
 const toDate = ref(new Date())
 const adults = ref(0)
 const children = ref(0)
+
+const router = useRouter()
+
+const location = ref("")
 
 const increaseAdults = () => {
     adults.value++
@@ -25,6 +30,21 @@ const increaseChildren = () => {
 const decreaseChildren = () => {
     if (children.value > 0) children.value--
 }
+
+const search = () => {
+    console.log(fromDate.value.toLocaleDateString())
+
+    const searchParams = {
+        fromDate: fromDate.value.toLocaleDateString(), // Konvertera datum till ISO-strängar
+        toDate: toDate.value.toLocaleDateString(),
+        adults: adults.value,
+        children: children.value,
+    }
+    router.push({
+        name: "NextComponent",
+        params: searchParams, // Skicka som params
+    })
+}
 </script>
 
 <template>
@@ -36,6 +56,7 @@ const decreaseChildren = () => {
                 class="h-full min-w-64 rounded-l-full p-10 text-start transition-transform duration-200 ease-in-out hover:rounded-r-full hover:bg-gray-200 hover:shadow-md focus:rounded-r-full focus:bg-gray-100 focus:shadow-md focus:outline-none"
                 type="text"
                 placeholder="Var"
+                v-model="location"
             />
 
             <VDatePicker v-model="fromDate">
@@ -95,7 +116,7 @@ const decreaseChildren = () => {
                         class="absolute -bottom-[11px] right-1 h-3 w-[350px]"
                     >
                         <ul
-                            class="absolute right-0 top-[11px] flex w-[350px] flex-col items-center justify-center divide-y rounded-2xl border bg-white p-4 shadow-xl"
+                            class="absolute right-0 top-[11px] flex w-[350px] flex-col items-center justify-center divide-y rounded-lg border bg-white p-4 shadow-xl"
                         >
                             <li
                                 class="flex w-full items-center justify-between p-5"
@@ -154,6 +175,7 @@ const decreaseChildren = () => {
         </div>
         <button
             class="absolute right-8 max-h-16 min-h-16 min-w-16 max-w-32 rounded-full bg-blue-500 text-center transition-transform duration-200 ease-in-out hover:scale-110 hover:rounded-full hover:bg-blue-400 focus:shadow-sm focus:outline-none active:bg-blue-600"
+            @click="search"
         >
             <Search class="mx-auto" :size="23" color="white" />
         </button>
