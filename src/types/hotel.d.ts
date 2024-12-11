@@ -1,4 +1,4 @@
-interface AirBnb {
+interface Hotel {
     name: string;
     city: string;
     price_per_night: {
