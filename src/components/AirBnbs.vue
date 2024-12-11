@@ -13,16 +13,7 @@ watch(store.airbnbs, async () => {
 
 
 <template>
-    <ul v-if="store.airbnbs" class="mx-auto max-w-screen-md">
+    <ul v-if="store.airbnbs" class="flex flex-col p-2 gap-2 ">
         <AirBnbCard v-for="airbnb in store.airbnbs" :key="airbnb.name" :airbnb="airbnb" />
     </ul>
 </template>
-
-<style scoped>
-ul {
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 10px;
-}
-</style>
