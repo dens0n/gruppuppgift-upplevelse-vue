@@ -32,17 +32,15 @@ const decreaseChildren = () => {
 }
 
 const search = () => {
-    console.log(fromDate.value.toLocaleDateString())
-
     const searchParams = {
-        fromDate: fromDate.value.toLocaleDateString(), // Konvertera datum till ISO-strängar
-        toDate: toDate.value.toLocaleDateString(),
+        from: fromDate.value.toISOString().split("T")[0],
+        to: toDate.value.toISOString().split("T")[0],
         adults: adults.value,
         children: children.value,
     }
     router.push({
-        name: "NextComponent",
-        params: searchParams, // Skicka som params
+        name: "hotels",
+        params: searchParams,
     })
 }
 </script>
