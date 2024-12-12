@@ -18,7 +18,8 @@ const bookingData = {
     guests: 2,
     dateFrom: "2022-10-01",
     dateTo: "2022-10-04",
-    airBnbId: 1
+    airBnbId: 1,
+    service: 1720.60
 }
 
 // const airBnbData = {
@@ -38,6 +39,9 @@ const bookingData = {
 
 </script>
 
+<!-- TODO: booking data -->
+<!-- TODO: price formating -->
+
 <template>
     <main class="flex flex-col items-center mt-40">
         <div class="flex gap-4">
@@ -50,7 +54,7 @@ const bookingData = {
                 </div>
                 <div>
                     <p class="font-bold">Guests</p>
-                    <p>1 guest</p>
+                    <p>{{bookingData.guests}} guests</p>
                 </div>
             </div>
             <!-- Price details -->
@@ -66,18 +70,18 @@ const bookingData = {
                 <div class="my-4 border-b"></div>
                 <h1 class="font-bold">Price details</h1>
                 <div class="flex justify-between">
-                    <p>1,950.00 kr SEK x 5 nights</p>
-                    <p>9,750.00 kr SEK</p>
+                    <p>{{ hotel.price_per_night.adult }} kr SEK x {{ bookingData.nights }} nights</p>
+                    <p>{{hotel.price_per_night.adult * bookingData.nights}} kr SEK</p>
                 </div>
                 <div class="flex justify-between">
                     <p>Airbnb service</p>
-                    <p>1,720.60 kr SEK</p>
+                    <p>{{bookingData.service}} kr SEK</p>
                 </div>
                 <!-- divider -->
                 <div class="my-4 border-b"></div>
                 <div class="flex justify-between">
                     <h1>Total</h1>
-                    <h1 class="font-bold">11,470.60 kr SEK</h1>
+                    <h1 class="font-bold">{{ hotel.price_per_night.adult * bookingData.nights + bookingData.service }} kr SEK</h1>
                 </div>
             </div>
         </div>
