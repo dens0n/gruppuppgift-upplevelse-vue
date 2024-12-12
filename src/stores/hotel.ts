@@ -1,36 +1,44 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue';
 
-export const useHotelStore = defineStore('hotel', () => {
-    const hotels = ref<Hotel[]>([])
+export const useHotelStore = defineStore('hotel', {
+    state: () => ({
+        hotels: ref<Hotel[]>([]),
+        loading: false,
+    }),
+    getters: {},
+    actions: {
+        async getHotels() {
+            try {
+                this.loading = true;
+                const response = await fetch('/hotels.json');
+                const data: Hotel[] = await response.json();
 
-    async function getHotels() {
-        try {
-            const response = await fetch('/hotels.json');
-            const data: Hotel[] = await response.json();
-            hotels.value = data;
+                this.hotels = data;
 
-        } catch (error) {
-            console.error(error);
+                this.loading = false;
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        async getHotel(name: string) {
+            try {
+                this.loading = true;
+
+                const response = await fetch('/hotels.json');
+                const data: Hotel[] = await response.json();
+
+                const hotelValue: Hotel = data.find((hotel) => hotel.name.includes(name)) as Hotel
+
+                if (!hotelValue) throw new Error("Hotel not found");
+
+                this.loading = false;
+                return hotelValue;
+            } catch (error) {
+                throw error;
+            }
         }
     }
 
-    async function getHotel(name: string) {
-        try {
-            const response = await fetch('/hotels.json');
-            const data: Hotel[] = await response.json();
-
-            const hotelValue: Hotel = data.find((hotel) => hotel.name.includes(name)) as Hotel
-
-            return hotelValue;
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    return {
-        hotels,
-        getHotels,
-        getHotel,
-    }
 })

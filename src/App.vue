@@ -4,6 +4,8 @@ import { RouterView } from "vue-router"
 </script>
 
 <template>
-    <Navbar />
-    <RouterView />
+    <div class="flex flex-col h-screen">
+        <Navbar />
+        <RouterView />
+    </div>
 </template>
