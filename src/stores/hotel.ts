@@ -22,23 +22,7 @@ export const useHotelStore = defineStore('hotel', {
             }
         },
 
-        async getHotel(name: string) {
-            try {
-                this.loading = true;
 
-                const response = await fetch('/hotels.json');
-                const data: Hotel[] = await response.json();
-
-                const hotelValue: Hotel = data.find((hotel) => hotel.name.includes(name)) as Hotel
-
-                if (!hotelValue) throw new Error("Hotel not found");
-
-                this.loading = false;
-                return hotelValue;
-            } catch (error) {
-                throw error;
-            }
-        }
     }
 
 })

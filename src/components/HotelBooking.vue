@@ -1,20 +1,25 @@
 <script setup lang="ts">
-import { useHotelStore } from '@/stores/hotel';
 import { ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 
 const hotel = ref<Hotel>({} as Hotel)
-const store = useHotelStore();
 const route = useRoute();
+const loading = ref<boolean>(false)
 const name = route.params.name as string;
 
 watchEffect(async () => {
     try {
-        if (store.hotels.length < 0) {
-            await store.getHotels();
-            return;
-        }
-        hotel.value = await store.getHotel(name)
+        loading.value = true;
+
+        const response = await fetch('/hotels.json');
+        const data: Hotel[] = await response.json();
+
+        const hotelValue: Hotel = data.find((hotel) => hotel.name.includes(name)) as Hotel
+
+        if (!hotelValue) throw new Error("Hotel not found");
+
+        loading.value = false;
+        hotel.value = hotelValue;
     } catch (error) {
         console.error(error)
     }
@@ -23,7 +28,7 @@ watchEffect(async () => {
 </script>
 
 <template>
-    <div v-if="!store.loading && hotel.price_per_night">
+    <div v-if="!loading">
         <div class="container mx-auto">
             <img :src="`/img/${hotel.img}`" :alt="hotel.name" class="object-cover size-64 rounded-md">
             <div class="flex w-full justify-between">
