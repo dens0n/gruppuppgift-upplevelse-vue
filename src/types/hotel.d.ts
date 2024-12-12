@@ -8,3 +8,11 @@ interface Hotel {
     beds: number;
     img: string;
 }
+
+interface searchParams {
+    name: string,
+    from: string,
+    to: string,
+    adults: string,
+    children: string,
+}
