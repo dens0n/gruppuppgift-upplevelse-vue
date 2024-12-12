@@ -1,8 +1,22 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 defineProps<{
     hotel: Hotel,
 }>();
+
+const route = useRoute();
+const router = useRouter();
+
+const bookHotel = (name: string) => {
+    const params = {
+        name: name,
+        ...route.params
+    }
+    router.push({
+        name: "hotel",
+        params: params,
+    })
+}
 </script>
 
 <template>
@@ -12,8 +26,8 @@ defineProps<{
             <h2 class="font-bold">{{ hotel.name }}, {{ hotel.city }}</h2>
             <p><span class="font-bold">{{ hotel.price_per_night.adult }}kr SEK</span>/natt</p>
         </div>
-        <RouterLink :to="`/hotels/${hotel.name}`"><button
-                class="absolute right-2 bottom-1 bg-blue-500 border rounded-md px-4">Boka</button>
-        </RouterLink>
+        <button @click="bookHotel(hotel.name)" class="absolute right-2 bottom-1 bg-blue-500 border rounded-md px-4">
+            Boka
+        </button>
     </li>
 </template>
