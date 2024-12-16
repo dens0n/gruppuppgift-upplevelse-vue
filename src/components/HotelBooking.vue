@@ -1,21 +1,26 @@
 <script setup lang="ts">
-import { computed, ref, registerRuntimeCompiler, watch, watchEffect } from 'vue';
-import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
+import { computed, ref, watch, watchEffect } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { Wifi, EggFried, Brush, CirclePlus, CircleMinus } from 'lucide-vue-next';
+import type { SimpleDateRange } from 'v-calendar/dist/types/src/utils/date/range.js';
+import HotelTotalPrice from './HotelTotalPrice.vue';
 
-const hotel = ref<Hotel>({} as Hotel)
 const route = useRoute();
 const router = useRouter();
+const { name, from, to, adults, children } = route.params
+const hotel = ref<Hotel>({} as Hotel)
 const loading = ref<boolean>(false)
 const offers = ref<string[]>([]);
-const { name, from, to, adults, children } = route.params
-
 const isGuestModalOpen = ref(false)
-const fromDate = ref<Date>(new Date(from.toString()))
-const toDate = ref<Date>(new Date(to.toString()))
+
 const adultsValue = ref<number>(parseInt(adults.toString()))
 const childrenValue = ref<number>(parseInt(children.toString()))
-const days = ref<number>(Math.round((toDate.value.getTime() - fromDate.value.getTime()) / (1000 * 3600 * 24)))
+
+const dateRange = ref<SimpleDateRange>({
+    start: new Date(from.toString()),
+    end: new Date(to.toString())
+})
+
 
 const increaseAdults = () => {
     adultsValue.value++
@@ -34,18 +39,22 @@ const decreaseChildren = () => {
 }
 
 const countDays = computed(() => {
-    return Math.round((toDate.value.getTime() - fromDate.value.getTime()) / (1000 * 3600 * 24));
+    return Math.round((dateRange.value.end.getTime() - dateRange.value.start.getTime()) / (1000 * 3600 * 24));
 })
 
 const createParams = computed(() => {
     const searchParams = {
-        from: fromDate.value.toISOString().split("T")[0],
-        to: toDate.value.toISOString().split("T")[0],
+        from: dateRange.value.start.toISOString().split("T")[0],
+        to: dateRange.value.end.toISOString().split("T")[0],
         adults: adultsValue.value,
         children: childrenValue.value,
     }
 
     return searchParams;
+})
+
+const calculateTotal = computed(() => {
+    return (hotel.value.price_per_night.adult * adultsValue.value + hotel.value.price_per_night.child * childrenValue.value) * countDays.value;
 })
 
 watchEffect(async () => {
@@ -73,6 +82,10 @@ watchEffect(() => {
     })
 })
 
+watchEffect(() => {
+
+})
+
 </script>
 
 <template>
@@ -91,23 +104,19 @@ watchEffect(() => {
                 <div
                     class="mx-5 flex h-[85px] w-full max-w-4xl items-center justify-center divide-x rounded-full border border-gray-200 bg-white shadow-lg">
 
-                    <VDatePicker v-model="fromDate" mode="date">
+                    <VDatePicker v-model.range="dateRange" mode="date">
                         <template #default="{ inputValue, inputEvents }">
-                            <div class="flex h-full w-64 flex-col items-center justify-center text-start transition-transform duration-200 ease-in-out hover:rounded-full hover:bg-gray-200 hover:shadow-md focus:rounded-full focus:bg-gray-200 focus:shadow-sm focus:outline-none"
-                                :value="inputValue" v-on="inputEvents">
+                            <div
+                                class="flex h-full w-64 flex-col items-center justify-center text-start transition-transform duration-200 ease-in-out hover:rounded-full hover:bg-gray-200 hover:shadow-md focus:rounded-full focus:bg-gray-200 focus:shadow-sm focus:outline-none">
                                 <p>Incheckning</p>
-                                <input class="bg-inherit text-center font-extralight focus:outline-none"
-                                    :value="inputValue" readonly />
+                                <input class="bg-transparent text-center font-extralight focus:outline-none "
+                                    :value="inputValue.start" v-on="inputEvents.start" readonly>
                             </div>
-                        </template>
-                    </VDatePicker>
-                    <VDatePicker v-model="toDate" mode="date">
-                        <template #default="{ inputValue, inputEvents }">
-                            <div class="flex h-full w-64 flex-col items-center justify-center text-center transition-transform duration-200 ease-in-out hover:rounded-full hover:bg-gray-200 hover:shadow-md focus:rounded-full focus:bg-gray-200 focus:shadow-sm focus:outline-none"
-                                :value="inputValue" v-on="inputEvents">
+                            <div
+                                class="flex h-full w-64 flex-col items-center justify-center text-start transition-transform duration-200 ease-in-out hover:rounded-full hover:bg-gray-200 hover:shadow-md focus:rounded-full focus:bg-gray-200 focus:shadow-sm focus:outline-none">
                                 <p>Utcheckning</p>
-                                <input class="bg-inherit text-center font-extralight focus:outline-none"
-                                    :value="inputValue" readonly />
+                                <input class="bg-transparent text-center font-extralight focus:outline-none"
+                                    :value="inputValue.end" v-on="inputEvents.end" readonly />
                             </div>
                         </template>
                     </VDatePicker>
@@ -177,8 +186,7 @@ watchEffect(() => {
                         <label for="städning">Städning</label>
                     </div>
                 </div>
-
-                <p>Sammanlagda priset {{ countDays }}</p>
+                <p>{{ calculateTotal }} {{ countDays }}</p>
             </div>
         </div>
     </div>
