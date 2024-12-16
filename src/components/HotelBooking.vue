@@ -3,7 +3,7 @@ import { computed, ref, watch, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Wifi, EggFried, Brush, CirclePlus, CircleMinus } from 'lucide-vue-next';
 import type { SimpleDateRange } from 'v-calendar/dist/types/src/utils/date/range.js';
-import HotelTotalPrice from './HotelTotalPrice.vue';
+// import HotelTotalPrice from './HotelTotalPrice.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -186,6 +186,7 @@ watchEffect(() => {
                         <label for="städning">Städning</label>
                     </div>
                 </div>
+
                 <p>{{ calculateTotal }} {{ countDays }}</p>
             </div>
         </div>
