@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router"
-import { ArrowRight } from "lucide-vue-next"
+
 defineProps<{
     hotel: Hotel
 }>()
-const name = "martin"
 </script>
 
 <template>
