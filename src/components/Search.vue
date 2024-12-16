@@ -6,36 +6,43 @@ import { ref, onMounted, computed, reactive } from "vue"
 import { useRouter } from "vue-router"
 import { useHotelStore } from "@/stores/hotel"
 
+// Store och Router
 const store = useHotelStore()
 const router = useRouter()
 
+//States
 const isGuestModalOpen = ref(false)
 const isLocationModalOpen = ref(false)
 const dates = ref({
     start: new Date(),
     end: new Date(),
 })
-
+const disabledDates = ref([
+    {
+        start: null,
+        end: new Date(new Date().setDate(new Date().getDate() - 1)),
+    },
+])
 const location = ref("")
 const locationList = ref([])
-const disabledDates = ref([{ start: null, end: new Date() }])
-
 const guestCount = reactive({
     adults: 0,
     children: 0,
 })
+
+//Funktioner för antalet gäster
 const increaseGuestCount = (type) => {
     if (guestCount[type] !== undefined) {
         guestCount[type]++
     }
 }
-
 const decreaseGuestCount = (type) => {
     if (guestCount[type] !== undefined && guestCount[type] > 0) {
         guestCount[type]--
     }
 }
 
+//Länkar till nästa sida och skickar med params
 const search = () => {
     const searchParams = {
         location: location.value,
@@ -50,6 +57,7 @@ const search = () => {
     })
 }
 
+//Är inte alla fälten ifyllda så går det inte att söka
 const isSearchDisabled = computed(() => {
     return (
         !location.value ||
@@ -59,6 +67,7 @@ const isSearchDisabled = computed(() => {
     )
 })
 
+// Hämtar alla locations
 onMounted(async () => {
     try {
         locationList.value = await store.getHotelLocations()
@@ -99,7 +108,7 @@ onMounted(async () => {
                         class="absolute -bottom-[11px] left-1 h-3 w-[250px]"
                     >
                         <ul
-                            class="absolute right-0 top-[11px] flex max-h-[270px] w-[250px] flex-col items-center justify-start divide-y overflow-y-scroll rounded-lg border bg-white p-4 shadow-xl"
+                            class="absolute right-0 top-[11px] flex max-h-[270px] w-[250px] flex-col items-center justify-start overflow-y-scroll rounded-lg border bg-white p-1 shadow-xl"
                         >
                             <li
                                 v-for="loc in locationList"
@@ -108,9 +117,17 @@ onMounted(async () => {
                                     ((location = loc),
                                     (isLocationModalOpen = false))
                                 "
-                                class="flex w-full cursor-pointer items-center justify-between p-5 hover:underline"
+                                class="flex w-full cursor-pointer items-center justify-between"
                             >
-                                <span>{{ loc }}</span>
+                                <button
+                                    type="submit"
+                                    class="group relative isolation-auto z-10 mx-auto flex h-12 w-full items-center justify-start overflow-hidden rounded-md border-2 border-gray-50 bg-gray-50 px-4 py-2 text-lg shadow-xl backdrop-blur-md before:absolute before:-left-full before:-z-10 before:aspect-square before:w-full before:rounded-full before:bg-sky-300 before:transition-all before:duration-700 before:hover:left-0 before:hover:w-full before:hover:scale-150 before:hover:duration-700"
+                                    :class="
+                                        location === loc ? 'bg-sky-300' : ''
+                                    "
+                                >
+                                    {{ loc }}
+                                </button>
                             </li>
                         </ul>
                     </div>
@@ -175,14 +192,19 @@ onMounted(async () => {
                         class="absolute -bottom-[11px] right-1 h-3 w-[250px]"
                     >
                         <ul
-                            class="absolute right-0 top-[11px] flex w-[250px] flex-col items-center justify-center divide-y rounded-lg border bg-white p-4 shadow-xl"
+                            class="absolute right-0 top-[11px] flex w-[250px] flex-col items-center justify-center divide-y rounded-lg border bg-white p-2 shadow-xl"
                         >
                             <li
                                 class="flex w-full items-center justify-between p-5"
                             >
-                                <p>Vuxna</p>
+                                <div>
+                                    <p>Vuxna</p>
+                                    <p class="text-sm font-extralight">
+                                        13 år och äldre
+                                    </p>
+                                </div>
                                 <div
-                                    class="flex items-center justify-center gap-2"
+                                    class="flex items-center justify-center gap-1"
                                 >
                                     <button
                                         @click.stop="
@@ -190,7 +212,7 @@ onMounted(async () => {
                                         "
                                     >
                                         <Minus
-                                            :size="25"
+                                            :size="20"
                                             :color="
                                                 guestCount.adults <= 0
                                                     ? 'lightgray'
@@ -199,7 +221,7 @@ onMounted(async () => {
                                             :stroke-width="1"
                                         />
                                     </button>
-                                    <span class="w-5">{{
+                                    <span class="w-5 text-center">{{
                                         guestCount.adults
                                     }}</span>
                                     <button
@@ -207,16 +229,21 @@ onMounted(async () => {
                                             increaseGuestCount('adults')
                                         "
                                     >
-                                        <Plus :size="25" :stroke-width="1" />
+                                        <Plus :size="20" :stroke-width="1" />
                                     </button>
                                 </div>
                             </li>
                             <li
                                 class="flex w-full items-center justify-between p-5"
                             >
-                                <p>Barn</p>
+                                <div>
+                                    <p>Barn</p>
+                                    <p class="text-sm font-extralight">
+                                        Upp till 12 år
+                                    </p>
+                                </div>
                                 <div
-                                    class="flex items-center justify-center gap-2"
+                                    class="flex items-center justify-center gap-1"
                                 >
                                     <button
                                         @click.stop="
@@ -229,11 +256,11 @@ onMounted(async () => {
                                                     ? 'lightgray'
                                                     : ''
                                             "
-                                            :size="25"
+                                            :size="20"
                                             :stroke-width="1"
                                         />
                                     </button>
-                                    <span class="w-5">{{
+                                    <span class="w-5 text-center">{{
                                         guestCount.children
                                     }}</span>
                                     <button
@@ -241,7 +268,7 @@ onMounted(async () => {
                                             increaseGuestCount('children')
                                         "
                                     >
-                                        <Plus :size="25" :stroke-width="1" />
+                                        <Plus :size="20" :stroke-width="1" />
                                     </button>
                                 </div>
                             </li>
@@ -251,7 +278,7 @@ onMounted(async () => {
             </div>
         </div>
         <button
-            class="absolute right-8 max-h-16 min-h-16 min-w-16 max-w-32 cursor-pointer rounded-full bg-sky-600 text-center transition-transform duration-200 ease-in-out hover:scale-[1.05] hover:rounded-full hover:bg-sky-500 focus:shadow-sm focus:outline-none active:bg-blue-600"
+            class="absolute right-8 max-h-16 min-h-16 min-w-16 max-w-32 cursor-pointer rounded-full bg-sky-500 text-center transition-transform duration-200 ease-in-out hover:scale-[1.05] hover:rounded-full hover:bg-sky-500 active:bg-sky-400 active:shadow-inner"
             :disabled="isSearchDisabled"
             @click="search"
         >
