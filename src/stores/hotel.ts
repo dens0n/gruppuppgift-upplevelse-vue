@@ -1,28 +1,53 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue';
+import { defineStore } from "pinia"
+import { ref } from "vue"
 
-export const useHotelStore = defineStore('hotel', {
-    state: () => ({
-        hotels: ref<Hotel[]>([]),
-        loading: false,
-    }),
-    getters: {},
-    actions: {
-        async getHotels() {
-            try {
-                this.loading = true;
-                const response = await fetch('/hotels.json');
-                const data: Hotel[] = await response.json();
+export const useHotelStore = defineStore("hotel", () => {
+    const hotels = ref<Hotel[]>([])
 
-                this.hotels = data;
-
-                this.loading = false;
-            } catch (error) {
-                console.error(error);
-            }
-        },
-
-
+    async function getHotels() {
+        try {
+            const response = await fetch("/hotels.json")
+            const data: Hotel[] = await response.json()
+            hotels.value = data
+        } catch (error) {
+            console.error(error)
+        }
     }
 
+    async function getHotel(name: string) {
+        try {
+            const response = await fetch("/hotels.json")
+            const data: Hotel[] = await response.json()
+
+            const hotelValue: Hotel = data.find((hotel) =>
+                hotel.name.includes(name),
+            ) as Hotel
+
+            return hotelValue
+        } catch (error) {
+            throw error
+        }
+    }
+    async function getHotelLocations() {
+        try {
+            if (!hotels.value.length) {
+                await getHotels()
+            }
+
+            const uniqueLocations = Array.from(
+                new Set(hotels.value.map((hotel) => hotel.city)),
+            )
+
+            return uniqueLocations
+        } catch (error) {
+            console.error("Failed to get hotel locations:", error)
+            throw error
+        }
+    }
+    return {
+        hotels,
+        getHotels,
+        getHotel,
+        getHotelLocations,
+    }
 })

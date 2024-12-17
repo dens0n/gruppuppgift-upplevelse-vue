@@ -7,7 +7,13 @@
             "child": 800
         },
         "beds": 2,
-        "img": "GrandPlaza.jpg"
+        "max_guests": 4,
+        "available_dates": {
+            "start": "2024-12-01",
+            "end": "2024-12-31"
+        },
+        "img": "GrandPlaza.jpg",
+        "description": "A luxurious hotel located in the heart of Stockholm, perfect for city explorers."
     },
     {
         "name": "Seaside Retreat",
@@ -17,7 +23,13 @@
             "child": 750
         },
         "beds": 3,
-        "img": "SeasideRetreat.jpg"
+        "max_guests": 6,
+        "available_dates": {
+            "start": "2024-12-15",
+            "end": "2025-01-15"
+        },
+        "img": "SeasideRetreat.jpg",
+        "description": "A luxurious hotel located in the heart of Stockholm, perfect for city explorers."
     },
     {
         "name": "Mountain Inn",
@@ -27,7 +39,13 @@
             "child": 600
         },
         "beds": 2,
-        "img": "MountainInn.jpg"
+        "max_guests": 4,
+        "available_dates": {
+            "start": "2024-12-01",
+            "end": "2024-12-20"
+        },
+        "img": "MountainInn.jpg",
+        "description": "A luxurious hotel located in the heart of Stockholm, perfect for city explorers."
     },
     {
         "name": "Lakeside Lodge",
@@ -37,7 +55,13 @@
             "child": 500
         },
         "beds": 4,
-        "img": "LakesideLodge.jpg"
+        "max_guests": 8,
+        "available_dates": {
+            "start": "2024-12-10",
+            "end": "2024-12-25"
+        },
+        "img": "LakesideLodge.jpg",
+        "description": "A luxurious hotel located in the heart of Stockholm, perfect for city explorers."
     },
     {
         "name": "Urban Haven",
@@ -47,7 +71,13 @@
             "child": 900
         },
         "beds": 2,
-        "img": "UrbanHaven.jpg"
+        "max_guests": 4,
+        "available_dates": {
+            "start": "2024-12-05",
+            "end": "2024-12-30"
+        },
+        "img": "UrbanHaven.jpg",
+        "description": "A luxurious hotel located in the heart of Stockholm, perfect for city explorers."
     },
     {
         "name": "Forest Escape",
@@ -57,7 +87,13 @@
             "child": 650
         },
         "beds": 3,
-        "img": "ForestEscape.jpg"
+        "max_guests": 6,
+        "available_dates": {
+            "start": "2024-12-01",
+            "end": "2024-12-20"
+        },
+        "img": "ForestEscape.jpg",
+        "description": "A luxurious hotel located in the heart of Stockholm, perfect for city explorers."
     },
     {
         "name": "Royal Stay",
@@ -67,7 +103,13 @@
             "child": 1000
         },
         "beds": 2,
-        "img": "RoyalStay.jpg"
+        "max_guests": 4,
+        "available_dates": {
+            "start": "2024-12-18",
+            "end": "2025-01-05"
+        },
+        "img": "RoyalStay.jpg",
+        "description": "A luxurious hotel located in the heart of Stockholm, perfect for city explorers."
     },
     {
         "name": "Sunset Villa",
@@ -77,7 +119,13 @@
             "child": 850
         },
         "beds": 4,
-        "img": "SunsetVilla.jpg"
+        "max_guests": 8,
+        "available_dates": {
+            "start": "2024-12-10",
+            "end": "2024-12-30"
+        },
+        "img": "SunsetVilla.jpg",
+        "description": "A luxurious hotel located in the heart of Stockholm, perfect for city explorers."
     },
     {
         "name": "Harbor View",
@@ -87,7 +135,13 @@
             "child": 700
         },
         "beds": 3,
-        "img": "HarborView.jpg"
+        "max_guests": 6,
+        "available_dates": {
+            "start": "2024-12-01",
+            "end": "2024-12-20"
+        },
+        "img": "HarborView.jpg",
+        "description": "A luxurious hotel located in the heart of Stockholm, perfect for city explorers."
     },
     {
         "name": "Countryside Charm",
@@ -97,6 +151,12 @@
             "child": 550
         },
         "beds": 2,
-        "img": "CountrysideCharm.jpg"
+        "max_guests": 4,
+        "available_dates": {
+            "start": "2024-12-15",
+            "end": "2025-01-10"
+        },
+        "img": "CountrysideCharm.jpg",
+        "description": "A luxurious hotel located in the heart of Stockholm, perfect for city explorers."
     }
 ]

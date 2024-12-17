@@ -17,7 +17,7 @@ const router = createRouter({
             component: HotelBookingView,
         },
         {
-            path: "/hotels/:from/:to/:adults/:children",
+            path: "/hotels/:location/:from/:to/:adults/:children",
             name: "hotels",
             component: HotelsView,
         },
