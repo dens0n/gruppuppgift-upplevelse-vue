@@ -3,6 +3,7 @@ import { ref } from "vue"
 
 export const useHotelStore = defineStore("hotel", () => {
     const hotels = ref<Hotel[]>([])
+    const checkout = ref<CheckoutType>({} as CheckoutType)
 
     async function getHotels() {
         try {
@@ -28,6 +29,7 @@ export const useHotelStore = defineStore("hotel", () => {
             throw error
         }
     }
+
     async function getHotelLocations() {
         try {
             if (!hotels.value.length) {
@@ -44,8 +46,15 @@ export const useHotelStore = defineStore("hotel", () => {
             throw error
         }
     }
+
+    function addToCheckout(checkoutItem: CheckoutType) {
+        checkout.value = { ...checkoutItem };
+    }
+
     return {
+        checkout,
         hotels,
+        addToCheckout,
         getHotels,
         getHotel,
         getHotelLocations,

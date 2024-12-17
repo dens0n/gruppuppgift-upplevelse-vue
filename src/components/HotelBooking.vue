@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 import { Wifi, EggFried, Brush, CirclePlus, CircleMinus } from 'lucide-vue-next';
 import type { SimpleDateRange } from 'v-calendar/dist/types/src/utils/date/range.js';
+import { useHotelStore } from '@/stores/hotel';
 
 const route = useRoute();
+const store = useHotelStore();
 const hotel = ref<Hotel>({} as Hotel)
 const loading = ref<boolean>(false)
 
@@ -88,20 +90,41 @@ const calculatePerNight = computed(() => {
     return (hotel.value.price_per_night.adult * adultCount.value + hotel.value.price_per_night.child * childrenCount.value) * totalDays.value;
 })
 
-const calculateOffers = computed(() => {
+const checkedOffers = computed(() => {
     type OfferNames = typeof offers.value[number]["name"];
-
     const offersTotal: Record<OfferNames, number> = offers.value.reduce((acc, offer) => {
         acc[offer.name] = offer.checked ? offer.price : 0;
         return acc;
     }, {} as Record<OfferNames, number>);
+    return offersTotal;
+})
 
-    return offersTotal.breakfast * (adultCount.value + childrenCount.value) + offersTotal.wifi + offersTotal.cleaning
+const calculateOffers = computed(() => {
+    return checkedOffers.value.breakfast * (adultCount.value + childrenCount.value) + checkedOffers.value.wifi + checkedOffers.value.cleaning
 })
 
 const calculateTotalPrice = computed(() => {
     return calculatePerNight.value + calculateOffers.value;
 })
+
+const convertToCheckout = computed<CheckoutType>(() => {
+    return {
+        hotel: hotel.value,
+        offers: checkedOffers.value,
+        total_price: calculateTotalPrice.value,
+        date_range: {
+            start: dateRange.value.start.toISOString().split("T")[0],
+            end: dateRange.value.end.toISOString().split("T")[0],
+        },
+        adults: adultCount.value,
+        children: childrenCount.value
+    }
+})
+
+function handleCheckout() {
+    store.addToCheckout(convertToCheckout.value)
+    router.push({ name: "checkout" })
+}
 
 watchEffect(async () => {
     try {
@@ -127,6 +150,7 @@ watchEffect(() => {
         params: createParams.value
     })
 })
+
 </script>
 
 <template>
@@ -238,26 +262,9 @@ watchEffect(() => {
 
                 <div class="flex justify-between text-lg">
                     <p>Total summa: {{ calculateTotalPrice }} <span class="font-bold">kr SEK</span></p>
-                    <button class="border rounded-md p-2 bg-blue-400 ">Reservera</button>
+                    <button class="border rounded-md p-2 bg-blue-400 " @click="handleCheckout">Reservera</button>
                 </div>
             </div>
         </div>
     </div>
 </template>
-<!-- 
-"name": "Grand Plaza",
-"city": "Stockholm",
-"price_per_night": {
-    "adult": 1200,
-    "child": 800
-},
-"beds": 2,
-"img": "GrandPlaza.jpg" 
-        "essential_info": [
-            "Hel villa",
-            "Rymmer 4",
-            "1 sovrum",
-            "1 badrum",
-            "7 sängar"
-        ],
--->
