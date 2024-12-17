@@ -1,9 +1,14 @@
 import { defineStore } from "pinia"
-import { ref } from "vue"
+import { computed, ref } from "vue"
 
 export const useHotelStore = defineStore("hotel", () => {
     const hotels = ref<Hotel[]>([])
     const checkout = ref<CheckoutType>({} as CheckoutType)
+    const checkoutAmount = computed<number>(() => {
+        if (checkout.value && Object.keys(checkout.value).length > 0) return 1
+
+        return 0;
+    })
 
     async function getHotels() {
         try {
@@ -51,10 +56,16 @@ export const useHotelStore = defineStore("hotel", () => {
         checkout.value = { ...checkoutItem };
     }
 
+    function removeFromCheckout() {
+        checkout.value = {} as CheckoutType;
+    }
+
     return {
         checkout,
         hotels,
+        checkoutAmount,
         addToCheckout,
+        removeFromCheckout,
         getHotels,
         getHotel,
         getHotelLocations,
