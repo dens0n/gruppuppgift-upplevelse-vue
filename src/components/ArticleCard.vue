@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div class="max-w-sm rounded overflow-hidden shadow-lg">
+    <div class="max-w-sm rounded overflow-hidden shadow-lg bg-white">
         <image-carousel :article="props.article" />
         <div class="px-6 py-4">
             <div class="font-bold text-xl mb-2">{{ props.article.city }}</div>

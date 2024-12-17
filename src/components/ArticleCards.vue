@@ -23,7 +23,7 @@ onMounted(async () => {
         state.isLoading = false;
     }
 });
-console.log(state.articles);
+
 
 </script>
 <template>
@@ -31,7 +31,7 @@ console.log(state.articles);
         <div v-if="state.isLoading" class="text-center text-gray-500 py-6">
             <PulseLoader />
         </div>
-        <div v-else class="grid grid-cols-3 md:grid-cols-70/30 w-full gap-6">
+        <div v-else class="grid grid-cols-3 md:grid-cols-70/30 w-full gap-6 ">
             <ArticleCard v-for="article in state.articles" :key="article.id" :article="article" />
         </div>
     </div>
