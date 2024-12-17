@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Article } from "@/types";
+import imageCarousel from "./imageCarousel.vue";
 
 const props = defineProps<{
     article: Article;
@@ -8,7 +9,7 @@ const props = defineProps<{
 
 <template>
     <div class="max-w-sm rounded overflow-hidden shadow-lg">
-        <img class="w-full" :src="'../../public/img/'+props.article.img" alt="pic">
+        <image-carousel :article="props.article" />
         <div class="px-6 py-4">
             <div class="font-bold text-xl mb-2">{{ props.article.city }}</div>
             <p class="text-gray-700 text-base">
