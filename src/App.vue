@@ -4,7 +4,7 @@ import { RouterView } from "vue-router"
 </script>
 
 <template>
-    <div class="flex flex-col bg-gradient-to-b from-slate-100 to-sky-500 h-screen">
+    <div class="flex flex-col bg-gradient-to-b from-slate-100 to-sky-500 min-h-screen">
         <Navbar />
         <RouterView />
     </div>
