@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { Article } from "@/types";
 
 const props = defineProps<{

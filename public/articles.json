@@ -3,21 +3,21 @@
         "id": 1,
         "city": "Stockholm",
         "img": "GrandPlaza.jpg",
-        "article": "A luxurious hotel located in the heart of Stockholm, perfect for city explorers.",
+        "article": "Experience the elegance of Stockholm at Grand Plaza, a hotel blending modern luxury with Swedish charm, located close to the city's iconic landmarks.",
         "hashtags": ["Stockholm", "City", "Luxury"]
     },
     {
         "id": 2,
         "city": "Gothenburg",
         "img": "SeasideRetreat.jpg",
-        "article": "A luxurious hotel located in the heart of Stockholm, perfect for city explorers.",
+        "article": "Discover tranquility at Seaside Retreat in Gothenburg, offering breathtaking views of the coastline and a relaxing escape from the bustling city life.",
         "hashtags": ["Gothenburg", "Seaside", "Retreat"]
     },
     {
         "id": 3,
         "city": "Malmö",
         "img": "UrbanHaven.jpg",
-        "article": "A luxurious hotel located in the heart of Stockholm, perfect for city explorers.",
+        "article": "Immerse yourself in the vibrant culture of Malmö at Urban Haven, a stylish hotel perfect for urban adventurers and culture seekers.",
         "hashtags": ["Malmö", "Urban", "Haven"]
     }
 ]
