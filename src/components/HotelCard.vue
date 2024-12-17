@@ -3,6 +3,7 @@ import { RouterLink } from "vue-router"
 
 defineProps<{
     hotel: Hotel
+    searchOptions: SearchOptions
 }>()
 </script>
 
@@ -21,17 +22,23 @@ defineProps<{
 
         <!-- Text section -->
         <div class="flex h-full w-full flex-col gap-6 p-6">
-            <div class="flex items-start justify-between">
-                <h2 class="font-bold group-hover:underline">
+            <div class="flex items-start justify-between text-lg font-bold">
+                <h2 class="group-hover:underline">
                     {{ hotel.name }}, {{ hotel.city }}
                 </h2>
-                <span class="text-sm font-bold"
-                    >{{ hotel.price_per_night.adult }} kr/natt</span
-                >
+                <span>{{ hotel.price_per_night.adult }} kr/natt</span>
             </div>
-            <p class="text-sm font-light no-underline">
+            <p class="font-light no-underline">
                 {{ hotel.description || "Välkommen till detta hotell!" }}
             </p>
+            <div class="flex items-center gap-6 font-extralight">
+                <span>🛏 {{ hotel.beds }} bäddar</span>
+                <span>👥 Max {{ hotel.max_guests }} gäster</span>
+                <span
+                    >📅 {{ hotel.available_dates.start }} –
+                    {{ hotel.available_dates.end }}</span
+                >
+            </div>
         </div>
 
         <!-- Button -->
