@@ -1,60 +1,106 @@
 <script setup lang="ts">
-import { computed, ref, watch, watchEffect } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Wifi, EggFried, Brush, CirclePlus, CircleMinus } from 'lucide-vue-next';
 import type { SimpleDateRange } from 'v-calendar/dist/types/src/utils/date/range.js';
-// import HotelTotalPrice from './HotelTotalPrice.vue';
 
 const route = useRoute();
-const router = useRouter();
-const { name, from, to, adults, children } = route.params
 const hotel = ref<Hotel>({} as Hotel)
 const loading = ref<boolean>(false)
-const offers = ref<string[]>([]);
+
+const { name, from, to, adults, children } = route.params
+const adultCount = ref<number>(parseInt(adults.toString()))
+const childrenCount = ref<number>(parseInt(children.toString()))
+
+const router = useRouter();
 const isGuestModalOpen = ref(false)
-
-const adultsValue = ref<number>(parseInt(adults.toString()))
-const childrenValue = ref<number>(parseInt(children.toString()))
-
 const dateRange = ref<SimpleDateRange>({
     start: new Date(from.toString()),
     end: new Date(to.toString())
 })
 
-
 const increaseAdults = () => {
-    adultsValue.value++
+    adultCount.value++
 }
 
 const decreaseAdults = () => {
-    if (adultsValue.value > 0) adultsValue.value--
+    if (adultCount.value > 0) adultCount.value--
 }
 
 const increaseChildren = () => {
-    childrenValue.value++
+    childrenCount.value++
 }
 
 const decreaseChildren = () => {
-    if (childrenValue.value > 0) childrenValue.value--
+    if (childrenCount.value > 0) childrenCount.value--
 }
 
-const countDays = computed(() => {
-    return Math.round((dateRange.value.end.getTime() - dateRange.value.start.getTime()) / (1000 * 3600 * 24));
-})
+const offers = ref<OfferType[]>([{
+    icon: Wifi,
+    name: "wifi",
+    checked: false,
+    price: 100,
+},
+{
+    icon: EggFried,
+    name: "breakfast",
+    checked: false,
+    price: 100
+},
+{
+    icon: Brush,
+    name: "cleaning",
+    checked: false,
+    price: 500,
+}]);
 
 const createParams = computed(() => {
     const searchParams = {
         from: dateRange.value.start.toISOString().split("T")[0],
         to: dateRange.value.end.toISOString().split("T")[0],
-        adults: adultsValue.value,
-        children: childrenValue.value,
+        adults: adultCount.value,
+        children: childrenCount.value,
     }
 
     return searchParams;
 })
 
-const calculateTotal = computed(() => {
-    return (hotel.value.price_per_night.adult * adultsValue.value + hotel.value.price_per_night.child * childrenValue.value) * countDays.value;
+const totalDays = computed(() => {
+    return Math.round((dateRange.value.end.getTime() - dateRange.value.start.getTime()) / (1000 * 3600 * 24));
+})
+
+const checkedAll = computed(() => {
+    return offers.value.every((offer) => offer.checked)
+})
+
+const totalOffers = computed(() => {
+    return offers.value.filter((offer) => offer.checked).length;
+})
+
+const checkall = () => {
+    const select = checkedAll.value;
+    offers.value.forEach((offer) => {
+        offer.checked = !select;
+    })
+}
+
+const calculatePerNight = computed(() => {
+    return (hotel.value.price_per_night.adult * adultCount.value + hotel.value.price_per_night.child * childrenCount.value) * totalDays.value;
+})
+
+const calculateOffers = computed(() => {
+    type OfferNames = typeof offers.value[number]["name"];
+
+    const offersTotal: Record<OfferNames, number> = offers.value.reduce((acc, offer) => {
+        acc[offer.name] = offer.checked ? offer.price : 0;
+        return acc;
+    }, {} as Record<OfferNames, number>);
+
+    return offersTotal.breakfast * (adultCount.value + childrenCount.value) + offersTotal.wifi + offersTotal.cleaning
+})
+
+const calculateTotalPrice = computed(() => {
+    return calculatePerNight.value + calculateOffers.value;
 })
 
 watchEffect(async () => {
@@ -81,7 +127,6 @@ watchEffect(() => {
         params: createParams.value
     })
 })
-
 </script>
 
 <template>
@@ -89,7 +134,7 @@ watchEffect(() => {
         <div class="container flex flex-col mx-auto gap-2">
             <img :src="`/img/${hotel.img}`" :alt="hotel.name" class="object-cover size-64 rounded-md">
             <h2 class="font-bold">{{ hotel.name }}, {{ hotel.city }}</h2>
-            <p>{{ hotel.beds }}</p>
+            <p>{{ hotel.beds }} sängar</p>
             <p>Antal gäster</p>
             <p>Antal sovrum</p>
             <p>Antal badrum</p>
@@ -136,10 +181,10 @@ watchEffect(() => {
                                         <p>Vuxna</p>
                                         <div class="flex items-center justify-center gap-2">
                                             <button @click.stop="decreaseAdults">
-                                                <CircleMinus :size="30" :color="adultsValue <= 0 ? 'lightgray' : ''
+                                                <CircleMinus :size="30" :color="adultCount <= 0 ? 'lightgray' : ''
                                                     " :stroke-width="1" />
                                             </button>
-                                            <span class="w-5">{{ adultsValue }}</span>
+                                            <span class="w-5">{{ adultCount }}</span>
                                             <button @click.stop="increaseAdults">
                                                 <CirclePlus :size="30" :stroke-width="1" />
                                             </button>
@@ -149,10 +194,10 @@ watchEffect(() => {
                                         <p>Barn</p>
                                         <div class="flex items-center justify-center gap-2">
                                             <button @click.stop="decreaseChildren">
-                                                <CircleMinus :color="childrenValue <= 0 ? 'lightgray' : ''
+                                                <CircleMinus :color="childrenCount <= 0 ? 'lightgray' : ''
                                                     " :size="30" :stroke-width="1" />
                                             </button>
-                                            <span class="w-5">{{ childrenValue }}</span>
+                                            <span class="w-5">{{ childrenCount }}</span>
                                             <button @click.stop="increaseChildren">
                                                 <CirclePlus :size="30" :stroke-width="1" />
                                             </button>
@@ -163,27 +208,38 @@ watchEffect(() => {
                         </Transition>
                     </button>
                 </div>
-                <p>Tillägg</p>
 
-                <div class="flex border-b border-gray-300 justify-between pt-2">
-                    <div class="flex flex-col items-center bg-blue-300">
-                        <Wifi />
-                        <input type="checkbox" id="wifi" value="Wifi" v-model="offers">
-                        <label for="wifi">Wifi</label>
+                <div class="flex border-b border-gray-300">
+                    <div>
+                        <input type="checkbox" @click="checkall" :checked="checkedAll"> Markera alla</input>
+                        <div class="flex flex-col space-y-2 pt-2">
+                            <div v-for="offer in offers" :key="offer.name"
+                                class="flex flex-col items-center bg-blue-300 w-16">
+                                <component :is="offer.icon" />
+                                <input type="checkbox" :id="offer.name" :value="offer.name" v-model="offer.checked">
+                                <label :for="offer.name" class="capitalize">{{ offer.name }}</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex flex-col items-center bg-blue-300">
-                        <EggFried />
-                        <input type="checkbox" id="frukost" value="Frukost" v-model="offers">
-                        <label for="frukost">Frukost</label>
+                    <div class="w-full flex flex-col">
+                        <div class="flex">
+                            <p>{{ hotel.price_per_night.child * childrenCount + hotel.price_per_night.adult * adultCount
+                                }}
+                                x {{ totalDays }} nätter</p>
+                            <p><span class="font-bold">{{ calculatePerNight }}kr SEK</span></p>
+                        </div>
+                        <div class="flex">
+                            <p>{{ calculateOffers }}x {{ totalOffers }} tillägg</p>
+                            <p><span class="font-bold">{{ calculateOffers }}kr SEK</span></p>
+                        </div>
                     </div>
-                    <div class="flex flex-col items-center bg-blue-300">
-                        <Brush />
-                        <input type="checkbox" id="städning" value="Städning" v-model="offers">
-                        <label for="städning">Städning</label>
-                    </div>
+
                 </div>
 
-                <p>{{ calculateTotal }} {{ countDays }}</p>
+                <div class="flex justify-between">
+                    <p>Total summa: {{ calculateTotalPrice }} <span class="font-bold">kr SEK</span></p>
+                    <button>Reservera</button>
+                </div>
             </div>
         </div>
     </div>

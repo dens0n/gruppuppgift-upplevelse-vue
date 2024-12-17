@@ -16,3 +16,10 @@ interface searchParams {
     adults: string,
     children: string,
 }
+
+interface OfferType {
+    icon: FunctionalComponent<LucideProps, {}, any, {}>;
+    name: "wifi" | "breakfast" | "cleaning";
+    checked: boolean;
+    price: number
+}
