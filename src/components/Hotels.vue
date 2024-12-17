@@ -7,7 +7,6 @@ import { useRoute } from "vue-router"
 const store = useHotelStore()
 const route = useRoute()
 
-
 //Hämta ner paramsen
 const searchOptions = reactive<SearchOptions>({
     location: route.params.location as string,
@@ -16,7 +15,6 @@ const searchOptions = reactive<SearchOptions>({
     adults: Number(route.params.adults) || 0,
     children: Number(route.params.children) || 0,
 })
-
 
 // Filtrerar ut hotellen utifrån användarens sökning med params
 const filteredHotels = computed(() => {
@@ -46,8 +44,8 @@ watch(
 </script>
 
 <template>
-    <main class="min-h-screen bg-gradient-to-b from-slate-100 to-sky-500">
-        <div class="container mx-auto pt-20">
+    <main>
+        <div class="container mx-auto pt-4">
             <!-- Kontrollera om det finns filtrerade hotell och visa dem -->
             <ul v-if="filteredHotels.length > 0" class="flex flex-col gap-4">
                 <HotelCard

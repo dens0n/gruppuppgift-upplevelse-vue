@@ -5,7 +5,7 @@ import ArticleCards from "@/components/ArticleCards.vue"
 
 <template>
     <header
-        class="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-slate-100 to-sky-500 p-4 pb-40"
+        class="flex min-h-screen flex-col items-center justify-center  p-4 pb-40"
     >
         <div class="pb-16 text-center">
             <h1 class="text-5xl font-extrabold text-gray-800 md:text-7xl">
