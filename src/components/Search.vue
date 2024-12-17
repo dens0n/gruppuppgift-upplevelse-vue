@@ -175,9 +175,15 @@ onMounted(async () => {
             >
                 <div class="flex flex-col items-start">
                     <span class="relative left-9">Vem</span>
-                    <span class="relative left-9 font-extralight"
-                        >Lägg till gäster</span
-                    >
+                    <span class="relative left-9 font-extralight">{{
+                        guestCount.adults || guestCount.children > 0
+                            ? guestCount.adults +
+                              guestCount.children +
+                              (guestCount.adults + guestCount.children === 1
+                                  ? " gäst"
+                                  : " gäster")
+                            : "Lägg till gäster"
+                    }}</span>
                 </div>
                 <Transition
                     enter-active-class="transition duration-200 ease-in-out"
