@@ -38,3 +38,15 @@ interface OfferType {
     checked: boolean;
     price: number
 }
+
+interface CheckoutType {
+    hotel: Hotel,
+    offers: Record<"wifi" | "breakfast" | "cleaning", number>,
+    total_price: number,
+    date_range: {
+        start: string,
+        end: string
+    }
+    adults: number
+    children: number
+}
