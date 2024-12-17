@@ -8,6 +8,54 @@ defineProps<{
 </script>
 
 <template>
+    <div class="flex w-full justify-center">
+        <div
+            class="mx-5 flex h-14 w-full max-w-xl items-center justify-between divide-x divide-gray-600 rounded-full border border-gray-200 bg-white font-light shadow-lg"
+        >
+            <div class="flex-grow text-center">
+                {{ searchOptions.location }}
+            </div>
+            <div class="flex-grow text-center">
+                {{
+                    new Date(searchOptions.fromDate).getMonth() ===
+                    new Date(searchOptions.toDate).getMonth()
+                        ? new Date(searchOptions.fromDate).toLocaleDateString(
+                              "sv-SE",
+                              { day: "numeric" },
+                          ) +
+                          " - " +
+                          new Date(searchOptions.toDate)
+                              .toLocaleDateString("sv-SE", {
+                                  day: "numeric",
+                                  month: "short",
+                              })
+                              .replace(".", "")
+                        : new Date(searchOptions.fromDate)
+                              .toLocaleDateString("sv-SE", {
+                                  day: "numeric",
+                                  month: "short",
+                              })
+                              .replace(".", "") +
+                          " - " +
+                          new Date(searchOptions.toDate)
+                              .toLocaleDateString("sv-SE", {
+                                  day: "numeric",
+                                  month: "short",
+                              })
+                              .replace(".", "")
+                }}
+            </div>
+            <div class="flex-grow text-center">
+                {{
+                    searchOptions.adults + searchOptions.children === 1
+                        ? "1 gäst"
+                        : searchOptions.adults +
+                          searchOptions.children +
+                          " gäster"
+                }}
+            </div>
+        </div>
+    </div>
     <li
         class="group relative flex h-52 w-full justify-between rounded-lg border border-gray-300 bg-white p-1 transition-all duration-300 hover:cursor-pointer hover:shadow-md"
     >
