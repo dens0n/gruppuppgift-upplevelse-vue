@@ -131,19 +131,18 @@ watchEffect(() => {
 
 <template>
     <div v-if="!loading">
-        <div class="container flex flex-col mx-auto gap-2">
-            <img :src="`/img/${hotel.img}`" :alt="hotel.name" class="object-cover size-64 rounded-md">
-            <h2 class="font-bold">{{ hotel.name }}, {{ hotel.city }}</h2>
-            <p>{{ hotel.beds }} sängar</p>
-            <p>Antal gäster</p>
-            <p>Antal sovrum</p>
-            <p>Antal badrum</p>
+        <div class="container flex mx-auto gap-2 p-4">
+            <div>
+                <img :src="`/img/${hotel.img}`" :alt="hotel.name" class="object-cover size-96 rounded-md">
+                <h2 class="font-bold">{{ hotel.name }}, {{ hotel.city }}</h2>
+                <p>{{ hotel.beds }} sängar</p>
+            </div>
 
-            <div class="ml-auto">
+            <div class="ml-auto space-y-2">
                 <p><span class="font-bold">Vuxen 18+ år {{ hotel.price_per_night.adult }}kr SEK</span>/natt</p>
                 <p><span class="font-bold">Barn 1-17 år {{ hotel.price_per_night.child }}kr SEK</span>/natt</p>
                 <div
-                    class="mx-5 flex h-[85px] w-full max-w-4xl items-center justify-center divide-x rounded-full border border-gray-200 bg-white shadow-lg">
+                    class="mx-5 flex h-[85px] w-full items-center justify-center divide-x rounded-full border border-gray-200 bg-white shadow-lg">
 
                     <VDatePicker v-model.range="dateRange" mode="date">
                         <template #default="{ inputValue, inputEvents }">
@@ -214,21 +213,22 @@ watchEffect(() => {
                         <input type="checkbox" @click="checkall" :checked="checkedAll"> Markera alla</input>
                         <div class="flex flex-col space-y-2 pt-2">
                             <div v-for="offer in offers" :key="offer.name"
-                                class="flex flex-col items-center bg-blue-300 w-16">
-                                <component :is="offer.icon" />
+                                class="flex flex-col items-center bg-blue-300 w-16 rounded-md"
+                                :class="offer.checked ? 'opacity-100' : 'opacity-60'">
+                                <component :is="offer.icon" class="size-8" />
                                 <input type="checkbox" :id="offer.name" :value="offer.name" v-model="offer.checked">
                                 <label :for="offer.name" class="capitalize">{{ offer.name }}</label>
                             </div>
                         </div>
                     </div>
                     <div class="w-full flex flex-col">
-                        <div class="flex">
+                        <div class="flex justify-between max-w-xs">
                             <p>{{ hotel.price_per_night.child * childrenCount + hotel.price_per_night.adult * adultCount
                                 }}
                                 x {{ totalDays }} nätter</p>
                             <p><span class="font-bold">{{ calculatePerNight }}kr SEK</span></p>
                         </div>
-                        <div class="flex">
+                        <div class="flex justify-between max-w-xs">
                             <p>{{ calculateOffers }}x {{ totalOffers }} tillägg</p>
                             <p><span class="font-bold">{{ calculateOffers }}kr SEK</span></p>
                         </div>
@@ -236,9 +236,9 @@ watchEffect(() => {
 
                 </div>
 
-                <div class="flex justify-between">
+                <div class="flex justify-between text-lg">
                     <p>Total summa: {{ calculateTotalPrice }} <span class="font-bold">kr SEK</span></p>
-                    <button>Reservera</button>
+                    <button class="border rounded-md p-2 bg-blue-400 ">Reservera</button>
                 </div>
             </div>
         </div>
