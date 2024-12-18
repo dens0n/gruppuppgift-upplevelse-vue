@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref, watchEffect } from 'vue';
+import { computed, reactive, ref, watch, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Wifi, EggFried, Brush, Plus, Minus } from 'lucide-vue-next';
 import type { SimpleDateRange } from 'v-calendar/dist/types/src/utils/date/range.js';
@@ -20,7 +20,7 @@ const dateRange = ref<SimpleDateRange>({
 })
 
 const guestCount = reactive({
-    adults: parseInt(adults.toString()),
+    adults: Math.max(1, parseInt(adults.toString())),
     children: parseInt(children.toString()),
 })
 
@@ -112,15 +112,13 @@ const convertToCheckout = computed<CheckoutType>(() => {
     }
 })
 
-//Funktioner för antalet gäster
 const increaseGuestCount = (type: "adults" | "children") => {
     if (guestCount[type] !== undefined && totalGuests.value < hotel.value.max_guests) {
         guestCount[type]++
     }
-    console.log(totalGuests.value)
 }
 const decreaseGuestCount = (type: "adults" | "children") => {
-    if (guestCount[type] !== undefined && guestCount[type] > 0 && totalGuests.value <= hotel.value.max_guests) {
+    if (guestCount[type] !== undefined && guestCount[type] > 0 && totalGuests.value > 1) {
         guestCount[type]--
     }
 }
@@ -154,21 +152,23 @@ watchEffect(() => {
         params: createParams.value
     })
 })
-
 </script>
 
 <template>
     <div v-if="!loading">
-        <div class="container flex mx-auto gap-2 p-4">
-            <div>
+        <div class="max-w-fit flex mx-auto gap-4 p-4 ">
+            <div class="min-w-[400px] bg-white rounded-md p-4 space-y-2 shadow-lg">
                 <img :src="`/img/${hotel.img}`" :alt="hotel.name" class="object-cover size-96 rounded-md">
                 <h2 class="font-bold">{{ hotel.name }}, {{ hotel.city }}</h2>
                 <p>{{ hotel.beds }} sängar</p>
+                <p>{{ hotel.description }}</p>
             </div>
 
-            <div class="ml-auto space-y-2">
-                <p><span class="font-bold">Vuxen 18+ år {{ hotel.price_per_night.adult }}kr SEK</span>/natt</p>
-                <p><span class="font-bold">Barn 1-17 år {{ hotel.price_per_night.child }}kr SEK</span>/natt</p>
+            <div class="ml-auto space-y-4 bg-white rounded-md shadow-lg p-4">
+                <div class="text-lg">
+                    <p><span class="font-bold">Vuxen 18+ år {{ hotel.price_per_night.adult }}kr SEK</span>/natt</p>
+                    <p><span class="font-bold">Barn 1-17 år {{ hotel.price_per_night.child }}kr SEK</span>/natt</p>
+                </div>
                 <div class="relative flex items-center justify-center">
                     <div
                         class="mx-5 flex h-[85px] w-full max-w-4xl items-center justify-center rounded-full border border-gray-200 bg-white shadow-lg">
@@ -227,7 +227,7 @@ watchEffect(() => {
                                                 <button @click.stop="
                                                     decreaseGuestCount('adults')
                                                     ">
-                                                    <Minus :size="20" :color="guestCount.adults <= 0
+                                                    <Minus :size="20" :color="guestCount.adults <= 0 || totalGuests < 0
                                                         ? 'lightgray'
                                                         : ''
                                                         " :stroke-width="1" />
@@ -238,7 +238,10 @@ watchEffect(() => {
                                                 <button @click.stop="
                                                     increaseGuestCount('adults')
                                                     ">
-                                                    <Plus :size="20" :stroke-width="1" />
+                                                    <Plus :size="20" :color="totalGuests === hotel.max_guests
+                                                        ? 'lightgray'
+                                                        : ''
+                                                        " :stroke-width="1" />
                                                 </button>
                                             </div>
                                         </li>
@@ -253,7 +256,7 @@ watchEffect(() => {
                                                 <button @click.stop="
                                                     decreaseGuestCount('children')
                                                     ">
-                                                    <Minus :color="guestCount.children <= 0
+                                                    <Minus :color="guestCount.children <= 0 || totalGuests < 0
                                                         ? 'lightgray'
                                                         : ''
                                                         " :size="20" :stroke-width="1" />
@@ -264,7 +267,10 @@ watchEffect(() => {
                                                 <button @click.stop="
                                                     increaseGuestCount('children')
                                                     ">
-                                                    <Plus :size="20" :stroke-width="1" />
+                                                    <Plus :size="20" :color="totalGuests === hotel.max_guests
+                                                        ? 'lightgray'
+                                                        : ''
+                                                        " :stroke-width="1" />
                                                 </button>
                                             </div>
                                         </li>
@@ -275,28 +281,30 @@ watchEffect(() => {
                     </div>
                 </div>
 
-                <div class="flex border-b border-gray-300">
+                <div class="flex border-b border-gray-300 gap-4 pb-2">
                     <div>
                         <input type="checkbox" @click="checkall" :checked="checkedAll"> Markera alla</input>
-                        <div class="flex flex-col space-y-2 pt-2">
+                        <div class="flex pt-2 gap-2">
                             <div v-for="offer in offers" :key="offer.name"
                                 class="flex flex-col items-center bg-blue-300 w-16 rounded-md"
-                                :class="offer.checked ? 'opacity-100' : 'opacity-60'">
+                                :class="offer.checked ? 'opacity-100' : 'opacity-40'">
                                 <component :is="offer.icon" class="size-8" />
                                 <input type="checkbox" :id="offer.name" :value="offer.name" v-model="offer.checked">
                                 <label :for="offer.name" class="capitalize">{{ offer.name }}</label>
                             </div>
                         </div>
                     </div>
-                    <div class="w-full flex flex-col">
+                    <div class="w-full flex flex-col text-lg justify-end">
                         <div class="flex justify-between max-w-xs">
-                            <p>{{ hotel.price_per_night.child * guestCount.children + hotel.price_per_night.adult *
-                                guestCount.adults
+                            <p class="underline">
+                                {{ hotel.price_per_night.child * guestCount.children +
+                                    hotel.price_per_night.adult *
+                                    guestCount.adults
                                 }} x {{ totalDays }} nätter</p>
                             <p><span class="font-bold">{{ calculatePerNight }}kr SEK</span></p>
                         </div>
-                        <div class="flex justify-between max-w-xs">
-                            <p>{{ calculateOffers }}x {{ totalOffers }} tillägg</p>
+                        <div class="flex justify-between max-w-xs underline">
+                            <p>{{ calculateOffers }} x {{ totalOffers }} tillval</p>
                             <p><span class="font-bold">{{ calculateOffers }}kr SEK</span></p>
                         </div>
                     </div>
@@ -305,7 +313,7 @@ watchEffect(() => {
 
                 <div class="flex justify-between text-lg">
                     <p>Total summa: {{ calculateTotalPrice }} <span class="font-bold">kr SEK</span></p>
-                    <button class="border rounded-md p-2 bg-blue-400 " @click="handleCheckout">Reservera</button>
+                    <button class="rounded-md p-2 px-8 bg-blue-400 text-xl" @click="handleCheckout">Reservera</button>
                 </div>
             </div>
         </div>
