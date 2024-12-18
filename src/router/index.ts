@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router"
-import HomeView from "@/views/HomeView.vue"
-import CheckoutView from "@/views/CheckoutView.vue"
-import HotelDetails from "@/components/HotelDetails.vue"
+import HomeView from "../views/HomeView.vue"
 import HotelsView from "@/views/HotelsView.vue"
+import HotelBookingView from "@/views/HotelBookingView.vue"
+import CheckoutView from "@/views/CheckoutView.vue"
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,13 +21,17 @@ const router = createRouter({
         {
             path: "/hotels/:name",
             name: "hotel",
-            component: HotelDetails,
-            props: true,
+            component: HotelBookingView,
         },
         {
-            path: "/hotels/:from/:to/:adults/:children",
+            path: "/hotels/:location/:from/:to/:adults/:children",
             name: "hotels",
             component: HotelsView,
+        },
+        {
+            path: "/checkout",
+            name: "checkout",
+            component: CheckoutView,
         },
     ],
 })

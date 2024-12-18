@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "city": "Discover the Magic of Stockholm: A Scandinavian Gem",
+        "img": ["Djurgården.jpg","GamlaStan.jpg","RoyalPalace.jpg"],
+        "article": "Stockholm, the stunning capital of Sweden, is a city where old-world charm meets modern sophistication. Spread across 14 islands connected by over 50 bridges, this \"Venice of the North\" offers breathtaking waterfront views, vibrant culture, and a rich history waiting to be explored. Whether you’re a history enthusiast, a foodie, or an outdoor lover,Stockholm has something for everyone.",
+        "hashtags": ["Stockholm", "City", "Luxury"]
+    },
+    {
+        "id": 2,
+        "city": "Explore Gothenburg: Sweden's Vibrant Coastal City",
+        "img": ["GothenburgCity.jpg","PeacefulSeaside.jpg","ScandinavianCottages.jpg"],
+        "article": "Gothenburg, Sweden’s second-largest city, is a hidden gem on the west coast, brimming with charm, culture, and coastal beauty. Known for its friendly atmosphere, world-class seafood, and innovative spirit, Gothenburg is a must-visit destination for travelers seeking an authentic Scandinavian experience. Whether you're a nature enthusiast, a foodie, or an urban explorer, Gothenburg has something for everyone.",
+        "hashtags": ["Gothenburg", "Seaside", "Retreat"]
+    },
+    {
+        "id": 3,
+        "city": "Discover Malmö: Sweden’s Gateway to the World",
+        "img": ["Torso.jpg","WaterfrontScene.jpg","MalmöCastle.jpg"],
+        "article": "Malmö, the vibrant city in southern Sweden, is a perfect blend of old-world charm and modern innovation. Located just a short trip across the iconic Öresund Bridge from Copenhagen, Malmö offers a unique mix of Scandinavian culture, cutting-edge architecture, and diverse culinary experiences. With its lively atmosphere and welcoming vibe, Malmö is a must-visit destination for travelers seeking something special.",
+        "hashtags": ["Malmö", "Urban", "Haven"]
+    }
+]
