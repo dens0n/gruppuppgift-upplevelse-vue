@@ -17,16 +17,18 @@ function resetCheckout() {
 
 <template>
     <nav class="sticky start-0 top-0 z-20 w-full backdrop-blur-[6px]">
-        <div class="container mx-auto flex flex-wrap items-center justify-between p-4">
+        <div class="container flex flex-wrap items-center justify-between p-4 mx-auto">
             <RouterLink to="/" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <Bed :size="30" />
-                <span class="self-center whitespace-nowrap text-2xl font-semibold">Star Travel</span>
+                <span class="self-center text-2xl font-semibold whitespace-nowrap">Star Travel</span>
             </RouterLink>
             <div @click="resetCheckout"
-                class="cursor-pointer flex items-center justify-center rounded-full border-2 border-slate-300 p-3 shadow-sm hover:bg-sky-400 relative">
+                class="relative flex items-center justify-center p-3 border-2 rounded-full shadow-sm cursor-pointer border-slate-300 hover:bg-sky-400">
                 <ShoppingCart />
-                <div v-if="store.checkoutAmount === 1" class="absolute -top-1 right-1 rounded-full">{{
-                    store.checkoutAmount }}
+                <div v-if="store.checkoutAmount === 1"
+                    class="absolute flex items-center justify-center w-6 h-6 text-white bg-blue-500 rounded-full -right-2 -top-1 animate-pulse"
+                    style="animation-iteration-count: 3; animation-duration: 800ms;">
+                    <p class="mb-[2px]">{{ store.checkoutAmount }}</p>
                 </div>
 
             </div>

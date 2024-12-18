@@ -19,7 +19,7 @@ const prevImage = () => {
 
 <template>
     <div class="relative w-full h-64">
-        <img :src="'../../public/img/' + props.article.img[currentImageIndex]" alt="Image" class="w-full h-full object-cover rounded-lg">
+        <img :src="'../../img/' + props.article.img[currentImageIndex]" alt="Image" class="w-full h-full object-cover rounded-lg">
         <button @click="prevImage" class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full">‹</button>
         <button @click="nextImage" class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full">›</button>
     </div>
