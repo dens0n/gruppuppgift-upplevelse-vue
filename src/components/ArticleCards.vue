@@ -3,7 +3,6 @@ import ArticleCard from "@/components/ArticleCard.vue";
 import axios from "axios";
 import { onMounted, reactive } from "vue";
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
-import { Article } from "@/types";
 
 const state = reactive<{
     articles: Article[];
@@ -15,7 +14,7 @@ const state = reactive<{
 
 onMounted(async () => {
     try {
-        const response = await axios.get('../../public/articles.json');
+        const response = await axios.get('../../articles.json');
         state.articles = response.data;
     } catch (error) {
         console.error(error);
@@ -27,11 +26,11 @@ onMounted(async () => {
 
 </script>
 <template>
-    <div class="container m-auto py-10 px-6">
-        <div v-if="state.isLoading" class="text-center text-gray-500 py-6">
+    <div class="container px-6 py-10 m-auto">
+        <div v-if="state.isLoading" class="py-6 text-center text-gray-500">
             <PulseLoader />
         </div>
-        <div v-else class="grid grid-cols-3 md:grid-cols-70/30 w-full gap-6 ">
+        <div v-else class="grid w-full grid-cols-3 gap-6 md:grid-cols-70/30 ">
             <ArticleCard v-for="article in state.articles" :key="article.id" :article="article" />
         </div>
     </div>

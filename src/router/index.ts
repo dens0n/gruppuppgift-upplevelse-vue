@@ -1,8 +1,8 @@
+import CheckoutView from "@/views/CheckoutView.vue"
+import HotelBookingView from "@/views/HotelBookingView.vue"
+import HotelsView from "@/views/HotelsView.vue"
 import { createRouter, createWebHistory } from "vue-router"
 import HomeView from "../views/HomeView.vue"
-import HotelsView from "@/views/HotelsView.vue"
-import HotelBookingView from "@/views/HotelBookingView.vue"
-import CheckoutView from "@/views/CheckoutView.vue"
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,13 +13,7 @@ const router = createRouter({
             component: HomeView,
         },
         {
-            path: "/basket/:name",
-            name: "basket",
-            component: CheckoutView,
-            props: true,
-        },
-        {
-            path: "/hotels/:name",
+            path: "/hotel/:name/:from/:to/:adults/:children",
             name: "hotel",
             component: HotelBookingView,
         },
