@@ -9,8 +9,8 @@ const router = useRouter();
 
 function resetCheckout() {
     if (store.checkoutAmount > 0) {
-        store.removeFromCheckout();
         router.push("/");
+        store.removeFromCheckout();
     }
 }
 </script>

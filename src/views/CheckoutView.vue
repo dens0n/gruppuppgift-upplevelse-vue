@@ -22,16 +22,12 @@ Totalt pris: ${checkout.value.total_price.toLocaleString("sv-SE")} SEK
 </script>
 
 <template>
-    <div
-        class="mx-auto grid max-w-4xl grid-cols-2 grid-rows-2 gap-3 rounded-lg bg-transparent p-6"
-    >
+    <div class="mx-auto grid max-w-4xl grid-cols-2 grid-rows-2 gap-3 rounded-lg bg-transparent p-6"
+        v-if="checkout.hotel">
         <!-- Hotellinformation -->
         <div class="row-span-2 overflow-hidden rounded-lg bg-white shadow">
-            <img
-                :src="`/img/${checkout.hotel.img}`"
-                :alt="checkout.hotel.name"
-                class="h-60 w-full rounded-t-lg object-cover"
-            />
+            <img :src="`/img/${checkout.hotel.img}`" :alt="checkout.hotel.name"
+                class="h-60 w-full rounded-t-lg object-cover" />
             <div class="space-y-4 p-6">
                 <h1 class="text-3xl font-bold text-gray-800">
                     {{ checkout.hotel.name }}
@@ -63,16 +59,12 @@ Totalt pris: ${checkout.value.total_price.toLocaleString("sv-SE")} SEK
         </div>
 
         <!-- Bokningsdetaljer -->
-        <div
-            class="space-y-4 rounded-lg bg-white p-6 shadow"
-            :class="
-                checkout.offers.wifi ||
+        <div class="space-y-4 rounded-lg bg-white p-6 shadow" :class="checkout.offers.wifi ||
                 checkout.offers.breakfast ||
                 checkout.offers.cleaning
-                    ? ''
-                    : 'row-span-2'
-            "
-        >
+                ? ''
+                : 'row-span-2'
+            ">
             <h2 class="text-2xl font-semibold text-gray-800">
                 Bokningsdetaljer
             </h2>
@@ -87,14 +79,11 @@ Totalt pris: ${checkout.value.total_price.toLocaleString("sv-SE")} SEK
             <p><strong>Sängar:</strong> {{ checkout.hotel.beds }}</p>
         </div>
         <!-- Tillval -->
-        <div
-            v-if="
-                checkout.offers.wifi ||
-                checkout.offers.breakfast ||
-                checkout.offers.cleaning
-            "
-            class="space-y-4 rounded-lg bg-white p-6 shadow"
-        >
+        <div v-if="
+            checkout.offers.wifi ||
+            checkout.offers.breakfast ||
+            checkout.offers.cleaning
+        " class="space-y-4 rounded-lg bg-white p-6 shadow">
             <h2 class="text-2xl font-semibold text-gray-800">Tillval</h2>
             <ul class="flex flex-col gap-1">
                 <li v-if="checkout.offers.wifi" class="text-gray-600">Wi-Fi</li>
@@ -127,10 +116,8 @@ Totalt pris: ${checkout.value.total_price.toLocaleString("sv-SE")} SEK
                 </p>
             </div>
             <div class="text-center">
-                <button
-                    @click="confirmBooking"
-                    class="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white shadow transition hover:bg-blue-700"
-                >
+                <button @click="confirmBooking"
+                    class="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white shadow transition hover:bg-blue-700">
                     Bekräfta bokning
                 </button>
             </div>
