@@ -5,3 +5,5 @@ interface Article {
     article: string
     hashtags: string[]
 }
+
+export default Article

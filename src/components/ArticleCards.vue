@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ArticleCard from "@/components/ArticleCard.vue";
+import type { Article } from "@/types";
 import axios from "axios";
 import { onMounted, reactive } from "vue";
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
