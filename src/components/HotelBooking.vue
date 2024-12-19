@@ -303,8 +303,8 @@ watchEffect(() => {
                                 }} x {{ totalDays }} nätter</p>
                             <p><span class="font-bold">{{ calculatePerNight }}kr SEK</span></p>
                         </div>
-                        <div class="flex justify-between max-w-xs underline">
-                            <p>{{ calculateOffers }} x {{ totalOffers }} tillval</p>
+                        <div class="flex justify-between max-w-xs">
+                            <p class="underline">{{ calculateOffers }} x {{ totalOffers }} tillval</p>
                             <p><span class="font-bold">{{ calculateOffers }}kr SEK</span></p>
                         </div>
                     </div>

@@ -7,10 +7,9 @@ import { RouterLink, useRouter } from "vue-router"
 const store = useHotelStore();
 const router = useRouter();
 
-function resetCheckout() {
+function toCheckout() {
     if (store.checkoutAmount > 0) {
-        router.push("/");
-        store.removeFromCheckout();
+        router.push("/checkout");
     }
 }
 </script>
@@ -22,7 +21,7 @@ function resetCheckout() {
                 <Bed :size="30" />
                 <span class="self-center text-2xl font-semibold whitespace-nowrap">Star Travel</span>
             </RouterLink>
-            <div @click="resetCheckout"
+            <div @click="toCheckout"
                 class="relative flex items-center justify-center p-3 border-2 rounded-full shadow-sm cursor-pointer border-slate-300 hover:bg-sky-400">
                 <ShoppingCart />
                 <div v-if="store.checkoutAmount === 1"
